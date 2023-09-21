@@ -43,17 +43,23 @@ function setEmailAddress(emailAddress: string) {
 // }
 
 
-Cypress.Commands.add('click',(element)=>{
+Cypress.Commands.add('clickElement',(element)=>{
     cy.get(element).should('exist').click()
 })
 
-Cypress.Commands.add('type',(element,text)=>{
+Cypress.Commands.add('typeElement',(element,text)=>{
     cy.get(element).should('exist').type(text)
 })
+// resultText(callback: (text: string) => void): void {
+//     cy.get(this._resultSearch, { timeout: 20000 }).then(($elem) => {
+//       callback($elem.text())
+//     })
 
-declare namespace Cypress{
-    interface Chainable{
-        click(element:any): Chainable<void>
-        type(element , text): Chainable<void>
+declare global{
+    namespace Cypress{
+        interface Chainable{
+            clickElement(element: string): Chainable<void>
+            typeElement(element , text: string): Chainable<void>
+        }
     }
 }

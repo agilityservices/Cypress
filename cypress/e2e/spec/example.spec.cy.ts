@@ -8,5 +8,5 @@ Given(/^user login to application$/, () => {
 });
 
 When(/^user click get link$/, () => {
-	cy.contains('get').click()
+	cy.contains('get').click()	
 });

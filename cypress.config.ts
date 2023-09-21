@@ -1,8 +1,9 @@
+
 import { defineConfig } from "cypress";
 import { addCucumberPreprocessorPlugin } from "@badeball/cypress-cucumber-preprocessor";
-// import browserify from "@badeball/cypress-cucumber-preprocessor";
+import browserify from "@badeball/cypress-cucumber-preprocessor/browserify";
+const allureWriter = require('@shelex/cypress-allure-plugin/writer');
 //@badeball/cypress-cucumber-preprocessor/browserify
-import createEsbuildPlugin from '@badeball/cypress-cucumber-preprocessor/esbuild'
 
 
 async function setupNodeEvents(
@@ -14,8 +15,8 @@ async function setupNodeEvents(
 
   on(
     "file:preprocessor",
-    createBundler({
-      plugins: [createEsbuildPlugin(config)],
+    browserify(config, {
+      typescript: require.resolve("typescript"),
     })
   );
 
@@ -29,11 +30,9 @@ export default defineConfig({
     defaultCommandTimeout:10000,
     specPattern:"**/*.feature",
     setupNodeEvents(on, config) {
-      // implement node event listeners here
-    },
+      allureWriter(on, config);
+      return config;
+  },
   },
 });
-function createBundler(arg0: { plugins: any[]; }): (file: Cypress.FileObject) => string | Promise<string> {
-  throw new Error("Function not implemented.");
-}
 
